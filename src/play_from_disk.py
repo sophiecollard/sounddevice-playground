@@ -6,7 +6,7 @@ import numpy as np
 import sounddevice as sd
 
 def main(console: Console, config: PlayFromDiskConfig, filename: str):
-    console.print("Sampling frequency: {} frames per second".format(config.fs))
+    console.print(config)
     console.print("Filename: {} frames per second".format(filename))
 
     input_device, output_device = get_config()

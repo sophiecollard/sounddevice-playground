@@ -7,14 +7,13 @@ import os
 import sounddevice as sd
 
 def main(console: Console, config: RecToDiskConfig, duration: int, filename: str):
-    frames = int(duration * config.fs)
-
-    console.print("Sampling frequency: {} frames per second".format(config.fs))
-    console.print("Channels: {}".format(config.channels))
+    console.print(config)
     console.print("Duration: {} seconds".format(duration))
+    console.print("Filename: {}".format(filename))
+
+    frames = int(duration * config.fs)
     console.print("Number of frames: {}".format(frames))
     console.print("Recording array size: {}".format(frames * config.channels))
-    console.print("Filename: {} frames per second".format(filename))
 
     input_device, output_device = get_config()
     sd.default.device = input_device, output_device

@@ -5,11 +5,10 @@ from console import Console, Terminal
 import sounddevice as sd
 
 def main(console: Console, config: RecThenPlayConfig, duration: int):
-    frames = int(duration * config.fs)
-
-    console.print("Sampling frequency: {} frames per second".format(config.fs))
-    console.print("Channels: {}".format(config.channels))
+    console.print(config)
     console.print("Duration: {} seconds".format(duration))
+
+    frames = int(duration * config.fs)
     console.print("Number of frames: {}".format(frames))
     console.print("Recording array size: {}".format(frames * config.channels))
 
