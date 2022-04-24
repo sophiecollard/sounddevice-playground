@@ -1,3 +1,4 @@
+from argparse import ArgumentParser, Namespace
 from config import PlayFromDiskConfig
 from configure import get_config
 from console import Console, Terminal
@@ -19,7 +20,18 @@ def main(console: Console, config: PlayFromDiskConfig, filename: str):
     sd.wait()
     console.print("End of playback")
 
+def parse_arguments() -> Namespace:
+    parser = ArgumentParser(description="Loads and plays a recording from the specified file")
+    parser.add_argument("--filename",
+                        dest="filename",
+                        type=str,
+                        default=r".\tmp\sample.npy",
+                        help="file name")
+    args = parser.parse_args()
+    return args
+
 if __name__ == "__main__":
     console = Terminal()
     config = PlayFromDiskConfig()
-    main(console, config, filename=r".\tmp\sample.npy")
+    args = parse_arguments()
+    main(console, config, filename=args.filename)

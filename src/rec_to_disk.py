@@ -1,3 +1,4 @@
+from argparse import ArgumentParser, Namespace
 from config import RecToDiskConfig
 from configure import get_config
 from console import Console, Terminal
@@ -5,7 +6,7 @@ import numpy as np
 import os
 import sounddevice as sd
 
-def main(console: Console, config: RecToDiskConfig, filename: str, duration: int=10):
+def main(console: Console, config: RecToDiskConfig, duration: int, filename: str):
     frames = int(duration * config.fs)
 
     console.print("Sampling frequency: {} frames per second".format(config.fs))
@@ -28,7 +29,23 @@ def main(console: Console, config: RecToDiskConfig, filename: str, duration: int
 
     np.save(file=filename, arr=record)
 
+def parse_arguments() -> Namespace:
+    parser = ArgumentParser(description="Records a sample of the specified duration and saves it to the specified file")
+    parser.add_argument("--duration",
+                        dest="duration",
+                        type=int,
+                        default=10,
+                        help="recoding duration in seconds")
+    parser.add_argument("--filename",
+                        dest="filename",
+                        type=str,
+                        default=r".\tmp\sample.npy",
+                        help="file name")
+    args = parser.parse_args()
+    return args
+
 if __name__ == "__main__":
     console = Terminal()
     config = RecToDiskConfig()
-    main(console, config, filename=r".\tmp\sample.npy")
+    args = parse_arguments()
+    main(console, config, duration=args.duration, filename=args.filename)

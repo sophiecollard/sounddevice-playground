@@ -1,9 +1,10 @@
+from argparse import ArgumentParser, Namespace
 from config import RecThenPlayConfig
 from configure import get_config
 from console import Console, Terminal
 import sounddevice as sd
 
-def main(console: Console, config: RecThenPlayConfig, duration: int=10):
+def main(console: Console, config: RecThenPlayConfig, duration: int):
     frames = int(duration * config.fs)
 
     console.print("Sampling frequency: {} frames per second".format(config.fs))
@@ -25,7 +26,18 @@ def main(console: Console, config: RecThenPlayConfig, duration: int=10):
     sd.wait()
     console.print("End of playback")
 
+def parse_arguments() -> Namespace:
+    parser = ArgumentParser(description="Records a sample of the specified duration then plays it back")
+    parser.add_argument("--duration",
+                        dest="duration",
+                        type=int,
+                        default=10,
+                        help="recoding duration in seconds")
+    args = parser.parse_args()
+    return args
+
 if __name__ == '__main__':
     console = Terminal()
     config = RecThenPlayConfig()
-    main(console, config)
+    args = parse_arguments()
+    main(console, config, duration=args.duration)
